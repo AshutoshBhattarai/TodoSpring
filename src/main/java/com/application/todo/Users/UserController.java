@@ -1,5 +1,6 @@
 package com.application.todo.Users;
 
+import com.application.todo.Services.ResponseCreator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,19 +10,21 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final ResponseCreator responseCreator;
+
     @GetMapping
-    private String getHome()
-    {
+    private String getHome() {
         return userService.getHomePage();
     }
 
     @PostMapping("/save")
-    private ResponseEntity<?> saveUser(@RequestBody UserModel user)
-    {
-        UserModel savedUser = userService.saveUser(user);
-        return ResponseEntity.ok(savedUser);
+    private ResponseEntity<?> saveUser(@RequestBody UserModel user) {
+        try {
+            UserModel savedUser = userService.saveUser(user);
+            return responseCreator.successMessage(savedUser);
+        } catch (Exception e) {
+            return responseCreator.errorMessage(e.getMessage());
+        }
     }
-
-
 
 }

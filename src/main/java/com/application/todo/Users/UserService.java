@@ -11,8 +11,10 @@ public class UserService {
     public String getHomePage() {
         return "Welcome to the User Home Page";
     }
-    public UserModel saveUser(UserModel user) {
-        return userRepo.save(user);
-    }
 
+    public UserModel saveUser(UserModel user) throws RuntimeException {
+        if (userRepo.findUserByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("User already exists");
+        } else return userRepo.save(user);
+    }
 }
