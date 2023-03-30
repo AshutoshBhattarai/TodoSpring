@@ -18,9 +18,9 @@ public class TodoService {
         return todoRepo.findAll();
     }
 
-    public TodoModel saveTodo(TodoModel todo) throws RuntimeException {
+    public TodoModel saveTodo(TodoModel todo, int id) throws RuntimeException {
         UserModel user = userRepo
-                .findById(todo.getUser().getId())
+                .findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         TodoModel saveTodo = TodoModel.builder()
                 .title(todo.getTitle())
@@ -32,8 +32,8 @@ public class TodoService {
         return todoRepo.save(saveTodo);
     }
 
-    public List<Map<String, Object>> getTodosById(int id) {
-        return todoRepo.getTodos(id);
+    public List<Map<String, Object>> getTodosByUserId(int id) {
+        return todoRepo.getTodosByUser(id);
     }
 
     public String updateTodo(TodoModel model) throws Exception {

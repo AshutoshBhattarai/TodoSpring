@@ -15,7 +15,7 @@ import java.util.Map;
 public interface TodoRepo extends JpaRepository<TodoModel, Integer> {
 
     @Query(value = "Select * from todos where user_id = ?1", nativeQuery = true)
-    public List<Map<String, Object>> getTodos(int id);
+    public List<Map<String, Object>> getTodosByUser(int id);
 
     @Transactional
     @Modifying

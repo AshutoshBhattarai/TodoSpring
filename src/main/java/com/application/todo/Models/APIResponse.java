@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class APIResponse {
 
     HttpStatus status;
-    Object message;
+    Map<String, Object> data;
     int statusCode;
     LocalDateTime timestamp;
 

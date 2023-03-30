@@ -1,6 +1,9 @@
 package com.application.todo.Todos;
 
+import com.application.todo.JWT.JwtService;
 import com.application.todo.Services.ResponseCreator;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +16,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TodoController {
     private final TodoService todoService;
+    private final JwtService jwtService;
     private final ResponseCreator responseCreator;
 
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     private List<TodoModel> getTodos() {
         return todoService.getTodos();
     }
 
     @PostMapping("/save")
-    private ResponseEntity<?> saveTodo(@RequestBody TodoModel model) {
+    private ResponseEntity<?> saveTodo(@RequestBody TodoModel model, HttpServletRequest request) {
         try {
-            TodoModel savedTodo = todoService.saveTodo(model);
+            TodoModel savedTodo = todoService.saveTodo(model, getIdFromToken(request));
             return responseCreator.successMessage(savedTodo);
         } catch (Exception e) {
             return responseCreator.errorMessage(e.getMessage());
@@ -52,7 +56,20 @@ public class TodoController {
 
 
     @GetMapping("/all/{id}")
-    private List<Map<String, Object>> getTodosById(@PathVariable String id) {
-        return todoService.getTodosById(Integer.parseInt(id));
+    private List<Map<String, Object>> getTodosById(@PathVariable String id, HttpServletRequest request) {
+        return todoService.getTodosByUserId(Integer.parseInt(id));
     }
+
+    @GetMapping("/user/all")
+    private List<Map<String, Object>> getUserTodos(HttpServletRequest request) {
+        return todoService.getTodosByUserId(getIdFromToken(request));
+    }
+
+    private int getIdFromToken(HttpServletRequest request) {
+        String getToken = request.getHeader("Authorization").substring(7);
+        Claims claims = jwtService.getAllClaims(getToken);
+        Object user_id = claims.get("Id");
+        return Integer.parseInt(user_id.toString());
+    }
+
 }
