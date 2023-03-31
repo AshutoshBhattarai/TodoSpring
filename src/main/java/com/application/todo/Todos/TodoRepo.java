@@ -1,5 +1,6 @@
 package com.application.todo.Todos;
 
+import com.application.todo.Todos.RequestHandlers.TodoRes;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,7 +17,6 @@ public interface TodoRepo extends JpaRepository<TodoModel, Integer> {
 
     @Query(value = "Select * from todos where user_id = ?1", nativeQuery = true)
     public List<Map<String, Object>> getTodosByUser(int id);
-
     @Transactional
     @Modifying
     @Query("UPDATE TodoModel t SET t.completed = :status where t.id = :todoId")

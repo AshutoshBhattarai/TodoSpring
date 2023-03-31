@@ -1,5 +1,7 @@
 package com.application.todo.Users;
 
+import com.application.todo.Users.RequestHandlers.UserRes;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,12 @@ public class UserService {
         if (userRepo.findUserByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("User already exists");
         } else return userRepo.save(userModel);
+    }
+
+    public UserRes getAllUsers(int id) {
+        var mapper = new ObjectMapper();
+        var user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return mapper.convertValue(user, UserRes.class);
     }
 }

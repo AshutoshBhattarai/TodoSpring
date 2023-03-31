@@ -2,6 +2,8 @@ package com.application.todo.Todos;
 
 import com.application.todo.JWT.JwtService;
 import com.application.todo.Services.ResponseCreator;
+import com.application.todo.Todos.RequestHandlers.TodoSaveReq;
+import com.application.todo.Todos.RequestHandlers.TodoUpdateReq;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +27,9 @@ public class TodoController {
     }
 
     @PostMapping("/save")
-    private ResponseEntity<?> saveTodo(@RequestBody TodoModel model, HttpServletRequest request) {
+    private ResponseEntity<?> saveTodo(@RequestBody TodoSaveReq model, HttpServletRequest request) {
         try {
-            TodoModel savedTodo = todoService.saveTodo(model, getIdFromToken(request));
+            String savedTodo = todoService.saveTodo(model, getIdFromToken(request));
             return responseCreator.successMessage(savedTodo);
         } catch (Exception e) {
             return responseCreator.errorMessage(e.getMessage());
@@ -35,7 +37,7 @@ public class TodoController {
     }
 
     @PostMapping("/update")
-    private ResponseEntity<?> updateTodo(@RequestBody TodoModel model) {
+    private ResponseEntity<?> updateTodo(@RequestBody TodoUpdateReq model) {
         try {
             String msg = todoService.updateTodo(model);
             return responseCreator.successMessage(msg);
@@ -45,7 +47,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/delete")
-    private ResponseEntity<?> deleteTodo(@RequestBody TodoModel model) {
+    private ResponseEntity<?> deleteTodo(@RequestBody TodoUpdateReq model) {
         try {
             todoService.deleteTodo(model);
             return responseCreator.successMessage("Todo deleted successfully");
@@ -55,13 +57,13 @@ public class TodoController {
     }
 
 
-    @GetMapping("/all/{id}")
-    private List<Map<String, Object>> getTodosById(@PathVariable String id, HttpServletRequest request) {
-        return todoService.getTodosByUserId(Integer.parseInt(id));
-    }
+//    @GetMapping("/all/{id}")
+//    private List<Map<String, Object>> getTodosById(@PathVariable String id, HttpServletRequest request) {
+//        return todoService.getTodosByUserId(Integer.parseInt(id));
+//    }
 
     @GetMapping("/user/all")
-    private List<Map<String, Object>> getUserTodos(HttpServletRequest request) {
+    private List<?> getUserTodos(HttpServletRequest request) {
         return todoService.getTodosByUserId(getIdFromToken(request));
     }
 

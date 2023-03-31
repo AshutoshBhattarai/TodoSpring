@@ -1,6 +1,7 @@
 package com.application.todo.Users;
 
 import com.application.todo.Services.ResponseCreator;
+import com.application.todo.Users.RequestHandlers.UserRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,4 +28,8 @@ public class UserController {
         }
     }
 
+    @GetMapping("/get/all")
+    private ResponseEntity<?> getAllUsers() {
+        return responseCreator.successMessage(userService.getAllUsers());
+    }
 }
