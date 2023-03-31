@@ -27,9 +27,4 @@ public class UserController {
             return responseCreator.errorMessage(e.getMessage());
         }
     }
-
-    @GetMapping("/get/all")
-    private ResponseEntity<?> getAllUsers() {
-        return responseCreator.successMessage(userService.getAllUsers());
-    }
 }
