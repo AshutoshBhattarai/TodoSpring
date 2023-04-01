@@ -57,11 +57,10 @@ public class TodoController {
     }
 
 
-//    @GetMapping("/all/{id}")
+    //    @GetMapping("/all/{id}")
 //    private List<Map<String, Object>> getTodosById(@PathVariable String id, HttpServletRequest request) {
 //        return todoService.getTodosByUserId(Integer.parseInt(id));
 //    }
-
     @GetMapping("/user/all")
     private List<?> getUserTodos(HttpServletRequest request) {
         return todoService.getTodosByUserId(getIdFromToken(request));
