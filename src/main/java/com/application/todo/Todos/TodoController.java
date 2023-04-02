@@ -63,10 +63,15 @@ public class TodoController {
 //    }
     @GetMapping("/user/all")
     private List<?> getUserTodos(HttpServletRequest request) {
-        return todoService.getTodosByUserId(getIdFromToken(request));
+
+        try {
+            return todoService.getTodosByUserId(getIdFromToken(request));
+        } catch (Exception e) {
+            return List.of(responseCreator.errorMessage(e.getMessage()));
+        }
     }
 
-    private int getIdFromToken(HttpServletRequest request) {
+    private int getIdFromToken(HttpServletRequest request) throws Exception {
         String getToken = request.getHeader("Authorization").substring(7);
         Claims claims = jwtService.getAllClaims(getToken);
         Object user_id = claims.get("Id");

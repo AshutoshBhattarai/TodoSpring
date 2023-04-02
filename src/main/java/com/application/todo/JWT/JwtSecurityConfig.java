@@ -21,9 +21,8 @@ public class JwtSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
+        return http.cors().and()
+                .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/save", "/auth/login")
                 .permitAll()
