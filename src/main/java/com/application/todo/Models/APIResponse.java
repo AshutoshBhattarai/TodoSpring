@@ -1,5 +1,6 @@
 package com.application.todo.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public class APIResponse {
 
     HttpStatus status;
-    Map<String, Object> data;
+    Object message;
     int statusCode;
     LocalDateTime timestamp;
 

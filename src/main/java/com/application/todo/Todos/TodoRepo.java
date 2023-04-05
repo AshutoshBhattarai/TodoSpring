@@ -17,6 +17,7 @@ public interface TodoRepo extends JpaRepository<TodoModel, Integer> {
 
     @Query(value = "Select * from todos where user_id = ?1", nativeQuery = true)
     public List<Map<String, Object>> getTodosByUser(int id);
+
     @Transactional
     @Modifying
     @Query("UPDATE TodoModel t SET t.completed = :status where t.id = :todoId")
@@ -36,4 +37,9 @@ public interface TodoRepo extends JpaRepository<TodoModel, Integer> {
     @Modifying
     @Query("UPDATE TodoModel t SET t.description = :desc where t.id = :todoId")
     public void updateTodoDesc(@Param("desc") String desc, @Param("todoId") int todoId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "Delete from todos where id = :id", nativeQuery = true)
+    public void deleteTodoById(@Param("id") int id);
 }

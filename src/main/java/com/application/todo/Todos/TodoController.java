@@ -46,7 +46,7 @@ public class TodoController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     private ResponseEntity<?> deleteTodo(@RequestBody TodoUpdateReq model) {
         try {
             todoService.deleteTodo(model);

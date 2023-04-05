@@ -47,8 +47,6 @@ public class TodoService {
     public String updateTodo(TodoUpdateReq model) throws Exception {
         TodoModel todo = todoRepo.findById(model.getId())
                 .orElseThrow(() -> new RuntimeException("Could not find todo"));
-        System.out.println("Current todo" + todo.getCompleted());
-        System.out.println("Updated todo" + !todo.getCompleted());
         if (model.getTitle() != null) {
             todoRepo.updateTodoTitle(model.getTitle(), model.getId());
         } else if (model.getCompleteOn() != null) {
@@ -64,6 +62,6 @@ public class TodoService {
     public void deleteTodo(TodoUpdateReq todoReq) throws Exception {
         TodoModel todo = todoRepo.findById(todoReq.getId())
                 .orElseThrow(() -> new RuntimeException("Could not find todo"));
-        todoRepo.deleteById(todoReq.getId());
+        todoRepo.deleteTodoById(todoReq.getId());
     }
 }

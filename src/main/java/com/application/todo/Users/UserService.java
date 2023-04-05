@@ -1,6 +1,7 @@
 package com.application.todo.Users;
 
 import com.application.todo.Users.RequestHandlers.UserRes;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepo userRepo;
+    private final ObjectMapper objectMapper;
 
     public String getHomePage() {
         return "Welcome to the User Home Page";
@@ -29,9 +31,13 @@ public class UserService {
     }
 
     public UserRes getAllUsers(int id) {
-        var mapper = new ObjectMapper();
         var user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return mapper.convertValue(user, UserRes.class);
+        return objectMapper.convertValue(user, UserRes.class);
+    }
+    public UserRes getUserById(int id) {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        UserModel user = userRepo.findById(id).orElseThrow(()-> new RuntimeException("User not found"));
+        return objectMapper.convertValue(user,UserRes.class);
     }
 }

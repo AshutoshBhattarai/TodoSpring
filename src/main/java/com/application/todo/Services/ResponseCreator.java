@@ -1,5 +1,6 @@
 package com.application.todo.Services;
 
+import com.application.todo.Authentication.AuthResponse;
 import com.application.todo.Models.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,36 +12,29 @@ import java.util.Map;
 public class ResponseCreator {
 
     public ResponseEntity<?> successMessage(Object response) {
-        Map<String, Object> message = new HashMap<String, Object>();
-        message.put("message", response);
         APIResponse apiResponse = APIResponse.builder()
                 .status(HttpStatus.OK)
-                .data(message)
+                .message(response)
                 .statusCode(200)
                 .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity.ok(apiResponse);
-    }
-
-    public ResponseEntity<?> successMessage(Map<String, Object> data) {
-        APIResponse apiResponse = APIResponse.builder()
-                .status(HttpStatus.OK)
-                .data(data)
-                .statusCode(200)
-                .timestamp(LocalDateTime.now())
-                .build();
-        return ResponseEntity.ok(apiResponse);
-    }
-
-    public ResponseEntity<?> errorMessage(Object response) {
-        Map<String, Object> message = new HashMap<String, Object>();
-        message.put("message", response);
+    }public ResponseEntity<?> errorMessage(Object response) {
         APIResponse apiResponse = APIResponse.builder()
                 .status(HttpStatus.BAD_REQUEST)
-                .data(message)
+                .message(response)
                 .statusCode(400)
                 .timestamp(LocalDateTime.now())
                 .build();
         return ResponseEntity.badRequest().body(apiResponse);
+    }
+    public ResponseEntity<?> loginSuccess(String token) {
+        AuthResponse response = AuthResponse.builder()
+                .message("User logged in successfully")
+                .timestamp(LocalDateTime.now())
+                .status(200)
+                .token("Bearer "+token)
+                .build();
+        return ResponseEntity.ok(response);
     }
 }
