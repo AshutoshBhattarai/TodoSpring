@@ -46,6 +46,18 @@ public class TodoController {
         }
     }
 
+    @PostMapping("/updateAll")
+    private ResponseEntity<?> updateTodoAll(@RequestBody TodoUpdateReq model)
+    {
+        try {
+            String msg = todoService.updateTodoAll(model);
+            return responseCreator.successMessage(msg);
+        }
+        catch (Exception e){
+            return responseCreator.errorMessage(e.getMessage());
+        }
+    }
+
     @PostMapping("/delete")
     private ResponseEntity<?> deleteTodo(@RequestBody TodoUpdateReq model) {
         try {

@@ -49,16 +49,24 @@ public class TodoService {
                 .orElseThrow(() -> new RuntimeException("Could not find todo"));
         if (model.getTitle() != null) {
             todoRepo.updateTodoTitle(model.getTitle(), model.getId());
-        } else if (model.getCompleteOn() != null) {
+        }if (model.getCompleteOn() != null) {
             todoRepo.updateTodoDate(model.getCompleteOn(), model.getId());
-        } else if (model.getDescription() != null) {
+        }if (model.getDescription() != null) {
             todoRepo.updateTodoDesc(model.getDescription(), model.getId());
         } else {
             todoRepo.updateTodoStatus(!todo.getCompleted(), model.getId());
         }
         return "Todo updated successfully";
+    }public String updateTodoAll(TodoUpdateReq model) throws Exception {
+        TodoModel todo = todoRepo.findById(model.getId())
+                .orElseThrow(() -> new RuntimeException("Could not find todo"));
+        todo.setTitle(model.getTitle());
+        todo.setCompleted(model.getCompleted());
+        todo.setCompleteOn(model.getCompleteOn());
+        todo.setDescription(model.getDescription());
+        todoRepo.save(todo);
+        return "Todo updated successfully";
     }
-
     public void deleteTodo(TodoUpdateReq todoReq) throws Exception {
         TodoModel todo = todoRepo.findById(todoReq.getId())
                 .orElseThrow(() -> new RuntimeException("Could not find todo"));
